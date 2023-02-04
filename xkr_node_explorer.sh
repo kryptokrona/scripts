@@ -30,7 +30,7 @@ curl_ok=$?
 
 GETNODES=$(curl -s -k https://raw.githubusercontent.com/kryptokrona/kryptokrona-nodes-list/master/nodes.json | jq '.nodes[] | { url }' | grep url | awk -F ":" '{ print $2 }' | tr -d '" ' | tr -s '\n' ' ' )
 NODES=( $GETNODES )
-VERSION="1.1.0"
+VERSION="1.1.1"
 NODESTOT="0"
 NODESUP="0"
 # Check Kryptokrona Daemon
@@ -41,7 +41,7 @@ echo -e "-----------------------------------------------------------------------
 for NODE in "${NODES[@]}"
 do
    NODESTOT=$(($NODESTOT + 1 ))
-   curl -m 6 -s http://"$NODE":11898/getinfo -o $NODE-node
+   curl -m 20 -s http://"$NODE":11898/getinfo -o $NODE-node
    if [ $? -eq 0 ] ; then
        STATUS=$(cat $NODE-node | jq ."status" | tr -d '"')
        if [[ "$STATUS" == "OK" ]] ; then
@@ -87,7 +87,7 @@ do
                             NODEH="${RED}$NODEHEIGHT${NC}"
                             NODES="${YELLOW}$NODE${NC}"
        fi
-       FEE=$(curl -m 3 -s -k http://"$NODE":11898/feeinfo | jq '.amount')
+       FEE=$(curl -m 20 -s -k http://"$NODE":11898/feeinfo | jq '.amount')
        echo -e "$NODES\t$NODESTATUS\t$NODESYNC\t$NODEH\t$NETHEIGHT\t$NODEIN/$NODEOUT\t$NODEVER\t$FEE"
        NODESUP=$(($NODESUP + 1 ))
    else
