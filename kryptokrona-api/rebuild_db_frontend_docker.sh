@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # start docker compose with a database and frontend
-docker-compose -f ../../docker-compose.yml up -d db frontend --build --force-recreate
+docker-compose -f ../../docker-compose.yml up -d --build --force-recreate db frontend
